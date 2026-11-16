@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Printer, Download, Sparkles, CheckCircle2, AlertOctagon, Target, Award, Info } from 'lucide-react';
+import { X, Printer, Download, Sparkles, CheckCircle2, AlertOctagon, Target, Award, Info, FileText } from 'lucide-react';
 
 export default function ReportModal({ isOpen, onClose, data }) {
   if (!isOpen || !data) return null;
@@ -26,7 +26,7 @@ export default function ReportModal({ isOpen, onClose, data }) {
   };
 
   const handleDownloadMarkdown = () => {
-    const mdContent = `# CareerLens AI — Professional Resume Audit & Career Report
+    const mdContent = `# CareerLens AI — Candidate Intelligence & ATS Audit Dossier
 Generated: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}
 Candidate: ${candidateName}
 Approximate Advisory Score: ${overallScore}/100
@@ -38,14 +38,14 @@ Approximate Advisory Score: ${overallScore}/100
 ## 1. Executive Summary
 ${data.summary}
 
-## 2. Score Breakdown (5 Dimensions)
+## 2. Diagnostic Vector Scores (5 Dimensions)
 - Technical Skills: ${breakdown.skills}%
 - Experience Depth: ${breakdown.experience}%
 - Education & Academics: ${breakdown.education}%
 - Projects & Architecture: ${breakdown.projects}%
 - Resume Clarity & Structure: ${breakdown.resume_clarity}%
 
-## 3. Matched Skills (${matchingSkills.length})
+## 3. Matched Competencies (${matchingSkills.length})
 ${matchingSkills.map(s => `- [x] **${typeof s === 'string' ? s : s.name}** (${s.category || 'Skill'}) — Relevance: ${s.relevance || 'Core'}`).join('\n')}
 
 ## 4. Missing Skills Required (${missingSkills.length})
@@ -57,17 +57,17 @@ ${strengths.map(s => `- ${typeof s === 'string' ? s : JSON.stringify(s)}`).join(
 ## 6. Identified Weaknesses & Gaps
 ${weaknesses.map(w => `- ${typeof w === 'string' ? w : JSON.stringify(w)}`).join('\n')}
 
-## 7. Actionable Improvement Suggestions
+## 7. Actionable Improvement Suggestions (Google XYZ Standard)
 ${suggestions.map((s, idx) => `
 ### Improvement ${idx + 1}: ${typeof s === 'string' ? s : s.issue} [${s.category || 'Optimization'}]
 - **Recommendation:** ${s.recommendation || s}
 ${s.example ? `- **Example:**\n  ${s.example}` : ''}
 `).join('\n')}
 
-## 8. Recommended Job Roles
+## 8. Recommended Career Trajectories
 ${roles.map(r => `- **${r.role || r}** (${r.match_percentage || r.matchPercentage || overallScore}% Match): ${r.reasoning || 'Skill alignment'}`).join('\n')}
 
-## 9. Personalized Learning Roadmap
+## 9. Personalized Competency Roadmap
 ${roadmap.map((p, idx) => `
 ### Milestone ${idx + 1}: ${p.skill} (Duration: ${p.suggested_duration})
 - **Learning Goal:** ${p.learning_goal}
@@ -83,45 +83,46 @@ ${p.resources?.length ? `- **Resources:** ${p.resources.join('; ')}` : ''}
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `CareerLens_Report_${candidateName.replace(/\s+/g, '_')}.md`);
+    link.setAttribute('download', `CareerLens_Dossier_${candidateName.replace(/\s+/g, '_')}.md`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="relative bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
+      <div className="relative bg-white dark:bg-[#0E111B] text-slate-900 dark:text-slate-100 rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200/80 dark:border-white/10 overflow-hidden">
+        
         {/* Header - Hidden on Print */}
-        <div className="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50 no-print">
-          <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-violet-600 text-white">
+        <div className="p-4 sm:p-5 border-b border-slate-200/80 dark:border-white/10 flex items-center justify-between bg-slate-50/80 dark:bg-white/[0.02] no-print">
+          <div className="flex items-center space-x-2.5">
+            <div className="p-2 rounded-xl bg-violet-600 text-white shadow-xs">
               <Award className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900">CareerLens Analysis Report</h3>
-              <p className="text-xs text-slate-500">Official candidate evaluation & advisory summary</p>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">Career Intelligence Dossier</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Executive candidate evaluation & advisory summary</p>
             </div>
           </div>
 
           <div className="flex items-center space-x-2">
             <button
               onClick={handlePrint}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-100 transition-colors shadow-xs"
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-300 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shadow-xs cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span>Print / Save as PDF</span>
+              <span>Print / PDF</span>
             </button>
             <button
               onClick={handleDownloadMarkdown}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 transition-colors shadow-xs"
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 transition-all shadow-xs cursor-pointer"
             >
-              <Download className="w-3.5 h-3.5" />
+              <Download className="w-3.5 h-3.5 text-amber-300" />
               <span>Download (.MD)</span>
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 transition-colors"
+              className="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-white/10 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -131,156 +132,124 @@ ${p.resources?.length ? `- **Resources:** ${p.resources.join('; ')}` : ''}
         {/* Scrollable Printable Report Content */}
         <div className="p-6 sm:p-10 overflow-y-auto space-y-8 print:p-0 print:overflow-visible">
           {/* Printable Header */}
-          <div className="border-b-2 border-slate-900 pb-4">
+          <div className="border-b-2 border-slate-900 dark:border-white pb-4">
             <div className="flex justify-between items-start">
               <div>
-                <h1 className="text-2xl font-black text-slate-900 tracking-tight">CAREERLENS AI</h1>
-                <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Resume Audit & Career Advisory Report</p>
+                <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">CAREERLENS AI</h1>
+                <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  Candidate Intelligence & ATS Audit Dossier
+                </p>
               </div>
-              <div className="text-right text-xs text-slate-500">
+              <div className="text-right text-xs text-slate-500 dark:text-slate-400">
                 <div>Date: {new Date().toLocaleDateString()}</div>
-                <div>Status: Verified Analysis</div>
+                <div>Status: Verified Gemini Synthesis</div>
               </div>
             </div>
           </div>
 
           {/* Advisory Notice */}
-          <div className="p-3.5 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-600">
-            <span className="font-bold text-slate-800">Advisory Notice: </span>
+          <div className="p-3.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-xs text-slate-600 dark:text-slate-300">
+            <span className="font-bold text-slate-900 dark:text-white">Advisory Notice: </span>
             {data.advisory_disclaimer || "This score is an approximate advisory score, not an official ATS result. It does not guarantee interview selection or job placement."}
           </div>
 
           {/* Candidate & Score Banner */}
-          <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-4">
+          <div className="p-5 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/10 flex flex-wrap items-center justify-between gap-4">
             <div>
-              <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Candidate Profile</div>
-              <div className="text-xl font-black text-slate-900">{candidateName}</div>
+              <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Candidate Profile</div>
+              <div className="text-xl font-black text-slate-900 dark:text-white">{candidateName}</div>
             </div>
             <div className="flex items-center space-x-6">
               <div className="text-right">
-                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Overall Advisory Score</div>
-                <div className="text-3xl font-black text-violet-600">{overallScore}/100</div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Advisory Benchmark</div>
+                <div className="text-3xl font-black text-violet-600 dark:text-violet-400">{overallScore}/100</div>
               </div>
             </div>
           </div>
 
           {/* Executive Summary */}
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 border-b border-slate-200 pb-1 mb-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-white/10 pb-1 mb-2">
               1. Executive Feedback
             </h3>
-            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed italic">
               "{data.summary}"
             </p>
           </div>
 
           {/* 5 Dimension Scores Grid */}
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 border-b border-slate-200 pb-1 mb-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-white/10 pb-1 mb-3">
               2. Score Breakdown (5 Dimensions)
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
-              <div className="p-3 rounded-xl border border-slate-200">
+              <div className="p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white/40 dark:bg-white/[0.02]">
                 <div className="text-xs text-slate-500">Skills Alignment</div>
-                <div className="text-lg font-bold text-slate-900">{breakdown.skills}%</div>
+                <div className="text-lg font-bold text-slate-900 dark:text-white font-mono">{breakdown.skills}%</div>
               </div>
-              <div className="p-3 rounded-xl border border-slate-200">
+              <div className="p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white/40 dark:bg-white/[0.02]">
                 <div className="text-xs text-slate-500">Experience</div>
-                <div className="text-lg font-bold text-slate-900">{breakdown.experience}%</div>
+                <div className="text-lg font-bold text-slate-900 dark:text-white font-mono">{breakdown.experience}%</div>
               </div>
-              <div className="p-3 rounded-xl border border-slate-200">
+              <div className="p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white/40 dark:bg-white/[0.02]">
                 <div className="text-xs text-slate-500">Education</div>
-                <div className="text-lg font-bold text-slate-900">{breakdown.education}%</div>
+                <div className="text-lg font-bold text-slate-900 dark:text-white font-mono">{breakdown.education}%</div>
               </div>
-              <div className="p-3 rounded-xl border border-slate-200">
+              <div className="p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white/40 dark:bg-white/[0.02]">
                 <div className="text-xs text-slate-500">Projects</div>
-                <div className="text-lg font-bold text-slate-900">{breakdown.projects}%</div>
+                <div className="text-lg font-bold text-slate-900 dark:text-white font-mono">{breakdown.projects}%</div>
               </div>
-              <div className="p-3 rounded-xl border border-slate-200">
+              <div className="p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white/40 dark:bg-white/[0.02]">
                 <div className="text-xs text-slate-500">Resume Clarity</div>
-                <div className="text-lg font-bold text-slate-900">{breakdown.resume_clarity}%</div>
+                <div className="text-lg font-bold text-slate-900 dark:text-white font-mono">{breakdown.resume_clarity}%</div>
               </div>
             </div>
           </div>
 
-          {/* Skills Breakdown */}
+          {/* Matched Skills vs Missing Skills Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
-              <h3 className="text-sm font-bold uppercase tracking-wider text-emerald-800 border-b border-emerald-200 pb-1 mb-2">
-                Matched Skills ({matchingSkills.length})
+              <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 border-b border-emerald-200 dark:border-emerald-900/50 pb-1 mb-2">
+                3. Matched Skills ({matchingSkills.length})
               </h3>
-              <ul className="text-xs space-y-1 text-slate-700">
+              <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                 {matchingSkills.map((s, i) => (
                   <li key={i} className="flex items-center space-x-1.5">
-                    <span className="text-emerald-600 font-bold">✓</span>
-                    <span className="font-semibold">{typeof s === 'string' ? s : s.name}</span>
-                    {s.category && <span className="text-slate-400 text-[10px]">({s.category})</span>}
+                    <span className="text-emerald-500 font-bold">✓</span>
+                    <span>{typeof s === 'string' ? s : s.name}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
             <div>
-              <h3 className="text-sm font-bold uppercase tracking-wider text-rose-800 border-b border-rose-200 pb-1 mb-2">
-                Missing Required Skills ({missingSkills.length})
+              <h3 className="text-xs font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400 border-b border-rose-200 dark:border-rose-900/50 pb-1 mb-2">
+                4. Missing Skills ({missingSkills.length})
               </h3>
-              <ul className="text-xs space-y-1 text-slate-700">
+              <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                 {missingSkills.map((s, i) => (
-                  <li key={i} className="flex items-start space-x-1.5">
-                    <span className="text-rose-600 font-bold">✗</span>
-                    <div>
-                      <span className="font-semibold">{typeof s === 'string' ? s : s.name}</span>
-                      {s.reason && <p className="text-[10px] text-slate-500">{s.reason}</p>}
-                    </div>
+                  <li key={i} className="flex items-center space-x-1.5">
+                    <span className="text-rose-500 font-bold">&bull;</span>
+                    <span>{typeof s === 'string' ? s : s.name}</span>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
 
-          {/* Recommendations Summary */}
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 border-b border-slate-200 pb-1 mb-2">
-              3. Actionable Improvement Suggestions
-            </h3>
-            <div className="space-y-3">
-              {suggestions.map((item, i) => (
-                <div key={i} className="text-xs">
-                  <div className="font-bold text-slate-900">• {typeof item === 'string' ? item : item.issue}</div>
-                  {item.recommendation && <div className="text-slate-600 pl-3">{item.recommendation}</div>}
-                  {item.example && (
-                    <div className="text-[11px] font-mono text-slate-500 pl-3 mt-0.5">{item.example}</div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Career Roadmap Summary */}
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 border-b border-slate-200 pb-1 mb-2">
-              4. Personalized Learning Roadmap
-            </h3>
-            <div className="space-y-2 text-xs">
-              {roadmap.map((phase, i) => (
-                <div key={i} className="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-                  <div className="font-bold text-violet-700">
-                    {phase.suggested_duration ? `${phase.suggested_duration}: ` : ''}{phase.skill}
-                  </div>
-                  <div className="text-slate-600 mt-0.5">Goal: {phase.learning_goal}</div>
-                  {phase.recommended_projects?.[0] && (
-                    <div className="text-slate-500 mt-0.5 italic">Project: {phase.recommended_projects[0]}</div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div className="pt-6 border-t border-slate-200 text-center text-[10px] text-slate-400">
-            CareerLens AI — Generated using Node.js, Express & Google Gemini.
-          </div>
         </div>
+
+        {/* Modal Footer */}
+        <div className="p-4 border-t border-slate-200/80 dark:border-white/10 bg-slate-50/80 dark:bg-white/[0.02] flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 no-print">
+          <span>CareerLens AI &bull; Executive Calibration Dossier</span>
+          <button
+            onClick={onClose}
+            className="px-4 py-1.5 rounded-xl font-bold bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-800 dark:text-slate-200 transition-colors cursor-pointer"
+          >
+            Close
+          </button>
+        </div>
+
       </div>
     </div>
   );

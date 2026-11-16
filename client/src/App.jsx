@@ -10,6 +10,7 @@ import Recommendations from './components/Recommendations';
 import RoleMatches from './components/RoleMatches';
 import RoadmapTimeline from './components/RoadmapTimeline';
 import ReportModal from './components/ReportModal';
+import AboutSection from './components/AboutSection';
 import { SAMPLE_RESUMES, SAMPLE_JOB_DESCRIPTIONS } from './utils/presets';
 import { RotateCcw, Download, Sparkles } from 'lucide-react';
 
@@ -41,7 +42,7 @@ export default function App() {
       });
   }, []);
 
-  // Quick Demo Loader for fast college presentation testing
+  // Quick Demo Loader for fast presentation testing
   const handleQuickDemo = (roleId) => {
     const resume = SAMPLE_RESUMES.find(r => r.id === roleId) || SAMPLE_RESUMES[0];
     const jd = SAMPLE_JOB_DESCRIPTIONS.find(j => j.id.startsWith(roleId)) || SAMPLE_JOB_DESCRIPTIONS[0];
@@ -54,8 +55,13 @@ export default function App() {
     setAnalysisResult(null);
     setError(null);
 
-    // Scroll smoothly to input section
-    window.scrollTo({ top: 400, behavior: 'smooth' });
+    // Scroll smoothly to studio section
+    const el = document.getElementById('studio-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 400, behavior: 'smooth' });
+    }
   };
 
   // Reset analysis back to clean state
@@ -131,8 +137,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      {/* Navigation */}
+    <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#08090E] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-300 relative selection:bg-violet-500/30 selection:text-violet-900 dark:selection:text-violet-200">
+      
+      {/* Dynamic Floating Glass Navbar */}
       <Navbar
         onReset={handleReset}
         hasResults={Boolean(analysisResult)}
@@ -140,13 +147,13 @@ export default function App() {
       />
 
       <main className="flex-1 pb-16">
-        {/* Attractive Landing Page & Project Introduction */}
+        {/* Multi-Color Fluid Ambient Hero */}
         <Hero
           onQuickDemo={handleQuickDemo}
           hasResults={Boolean(analysisResult)}
         />
 
-        {/* Input Section (PDF / TXT Upload & Job Description) */}
+        {/* Studio Input Section (PDF / TXT Upload & Job Description) */}
         <InputSection
           resumeMode={resumeMode}
           setResumeMode={setResumeMode}
@@ -173,66 +180,67 @@ export default function App() {
           onClearAll={handleReset}
         />
 
-        {/* Multi-Stage Animated Loading Scanner */}
+        {/* Multi-Stage Animated Holographic Loading Scanner */}
         {isLoading && <LoadingSkeleton />}
 
-        {/* Results Dashboard */}
+        {/* Executive Analysis Results Dashboard */}
         {analysisResult && !isLoading && (
-          <div id="analysis-results" className="max-w-6xl mx-auto px-4 pt-8">
+          <div id="analysis-results" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+            
             {/* 1. Score Card with 5-dimension breakdown & advisory disclaimer */}
             <ScoreOverview
               data={analysisResult}
               onOpenReport={() => setIsReportOpen(true)}
             />
 
-            {/* 2 & 3. Skill Matching & Missing Skills */}
+            {/* 2 & 3. Skill Gap Taxonomy Matrix */}
             <SkillsAnalysis
               matchingSkills={analysisResult.matching_skills || analysisResult.matchingSkills}
               missingSkills={analysisResult.missing_skills || analysisResult.missingSkills}
             />
 
-            {/* 4. Strengths & Weaknesses */}
+            {/* 4. Strengths & Weaknesses (with missing details distinction) */}
             <StrengthsWeaknesses
               strengths={analysisResult.strengths}
               weaknesses={analysisResult.weaknesses}
             />
 
-            {/* 4b. Actionable Improvement Cards (Google XYZ rewrites) */}
+            {/* 4b. Actionable Google XYZ Bullet Rewrites */}
             <Recommendations
               suggestions={analysisResult.improvement_suggestions || analysisResult.improvementSuggestions}
             />
 
-            {/* 5. Career Recommendations (Job Roles) */}
+            {/* 5. Recommended Career Trajectories */}
             <RoleMatches
               roles={analysisResult.recommended_job_roles || analysisResult.suitableRoles}
             />
 
-            {/* 6. Learning Roadmap Timeline */}
+            {/* 6. Personalized Competency Roadmap Timeline */}
             <RoadmapTimeline
               roadmap={analysisResult.personalized_learning_roadmap || analysisResult.learningRoadmap}
             />
 
-            {/* Bottom Actions Bar with Reset Button */}
-            <div className="mt-12 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            {/* Bottom Actions Bar */}
+            <div className="mt-12 p-6 sm:p-8 rounded-3xl glass-card border border-slate-200/80 dark:border-white/10 shadow-xl dark:shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left transition-all">
               <div>
-                <h4 className="text-sm font-bold text-slate-900">Finished Reviewing Audit?</h4>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  You can download the full executive report or reset to test another resume.
+                <h4 className="text-base font-bold text-slate-900 dark:text-white">Completed Candidate Audit</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  Export the full executive dossier as a formatted PDF/Markdown or reset workspace to audit another profile.
                 </p>
               </div>
               <div className="flex items-center space-x-3">
                 <button
                   type="button"
                   onClick={() => setIsReportOpen(true)}
-                  className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 shadow-md transition-all hover:scale-[1.02]"
+                  className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-slate-900 dark:bg-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 shadow-md transition-all hover:scale-[1.02] cursor-pointer"
                 >
-                  <Download className="w-4 h-4 text-violet-300" />
-                  <span>Download Report</span>
+                  <Download className="w-4 h-4 text-amber-400 dark:text-violet-600" />
+                  <span>Download Dossier</span>
                 </button>
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-700 bg-slate-100 hover:bg-rose-50 hover:text-rose-700 border border-slate-200 transition-colors"
+                  className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-white/10 hover:bg-rose-50 dark:hover:bg-rose-950/40 hover:text-rose-700 dark:hover:text-rose-300 border border-slate-200 dark:border-white/10 transition-colors cursor-pointer"
                 >
                   <RotateCcw className="w-4 h-4" />
                   <span>Reset Analysis</span>
@@ -241,25 +249,28 @@ export default function App() {
             </div>
           </div>
         )}
+
+        {/* Platform Methodology, Google XYZ & Privacy Standards */}
+        <AboutSection />
       </main>
 
-      {/* Downloadable PDF & Markdown Report Modal */}
+      {/* Downloadable PDF & Markdown Dossier Modal */}
       <ReportModal
         isOpen={isReportOpen}
         onClose={() => setIsReportOpen(false)}
         data={analysisResult}
       />
 
-      {/* Professional SaaS Footer */}
-      <footer className="bg-slate-900 text-slate-400 border-t border-slate-800 py-8 text-xs no-print">
-        <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center space-x-2">
-            <span className="font-bold text-white">CareerLens AI</span>
+      {/* Professional SaaS Multi-Theme Footer */}
+      <footer className="bg-slate-100 dark:bg-[#05060A] text-slate-600 dark:text-slate-400 border-t border-slate-200/80 dark:border-white/10 py-10 text-xs no-print transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center space-x-2.5">
+            <span className="font-extrabold text-slate-900 dark:text-white">CareerLens AI</span>
             <span>&bull;</span>
-            <span>College Project Demonstration MVP</span>
+            <span>Executive ATS Intelligence & Career Advisory MVP</span>
           </div>
-          <div className="flex items-center space-x-4 text-slate-500">
-            <span>React 19 &bull; Vite &bull; Tailwind CSS &bull; Node.js Express &bull; Google Gemini</span>
+          <div className="flex items-center space-x-4 text-slate-500 dark:text-slate-400">
+            <span>React 19 &bull; Vite &bull; Tailwind CSS v4 &bull; Node.js Express &bull; Google Gemini 3.5</span>
           </div>
         </div>
       </footer>
