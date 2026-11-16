@@ -1,0 +1,23 @@
+{
+  "name": "careerlens-ai",
+  "version": "1.0.0",
+  "description": "CareerLens AI - Professional AI Resume Analyzer & Career Advisor",
+  "scripts": {
+    "server": "cd server && npm start",
+    "client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "build": "cd client && npm run build"
+  },
+  "keywords": [
+    "ai",
+    "resume-analyzer",
+    "career-advisor",
+    "gemini",
+    "ats",
+    "react",
+    "express"
+  ],
+  "author": "CareerLens AI Team",
+  "license": "MIT"
+}
