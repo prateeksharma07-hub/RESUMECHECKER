@@ -10,7 +10,6 @@ import Recommendations from './components/Recommendations';
 import RoleMatches from './components/RoleMatches';
 import RoadmapTimeline from './components/RoadmapTimeline';
 import ReportModal from './components/ReportModal';
-import ApiKeyModal from './components/ApiKeyModal';
 import { SAMPLE_RESUMES, SAMPLE_JOB_DESCRIPTIONS } from './utils/presets';
 import { RotateCcw, Download, Sparkles } from 'lucide-react';
 
@@ -25,8 +24,6 @@ export default function App() {
   const [error, setError] = useState(null);
 
   const [isReportOpen, setIsReportOpen] = useState(false);
-  const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
-  const [customApiKey, setCustomApiKey] = useState(() => sessionStorage.getItem('careerlens_key') || '');
   const [isServerKeyConfigured, setIsServerKeyConfigured] = useState(false);
   
   // Sample Data Demo state
@@ -61,7 +58,7 @@ export default function App() {
     window.scrollTo({ top: 400, behavior: 'smooth' });
   };
 
-  // Reset analysis back to clean state (Requirement 8)
+  // Reset analysis back to clean state
   const handleReset = () => {
     setResumeText('');
     setFileUpload(null);
@@ -72,37 +69,20 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSaveApiKey = (key) => {
-    setCustomApiKey(key);
-    if (key) {
-      sessionStorage.setItem('careerlens_key', key);
-    } else {
-      sessionStorage.removeItem('careerlens_key');
-    }
-  };
-
   const handleAnalyze = async () => {
     setError(null);
     setIsLoading(true);
 
     try {
       let response;
-      const headers = {};
-      if (customApiKey) {
-        headers['x-gemini-api-key'] = customApiKey;
-      }
 
       if (resumeMode === 'file' && fileUpload) {
         const formData = new FormData();
         formData.append('resumeFile', fileUpload);
         formData.append('jobDescription', jobDescription);
-        if (customApiKey) {
-          formData.append('geminiApiKey', customApiKey);
-        }
 
         response = await fetch('/api/analyze', {
           method: 'POST',
-          headers,
           body: formData,
         });
       } else {
@@ -110,12 +90,10 @@ export default function App() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            ...headers,
           },
           body: JSON.stringify({
             resumeText,
             jobDescription,
-            geminiApiKey: customApiKey || undefined,
           }),
         });
       }
@@ -157,8 +135,6 @@ export default function App() {
       {/* Navigation */}
       <Navbar
         onReset={handleReset}
-        onOpenKeyModal={() => setIsKeyModalOpen(true)}
-        isKeyConfigured={isServerKeyConfigured || Boolean(customApiKey)}
         hasResults={Boolean(analysisResult)}
         onLoadDemo={() => handleQuickDemo('fullstack')}
       />
@@ -197,7 +173,7 @@ export default function App() {
           onClearAll={handleReset}
         />
 
-        {/* Multi-Stage Animated Loading Scanner (Requirement 9) */}
+        {/* Multi-Stage Animated Loading Scanner */}
         {isLoading && <LoadingSkeleton />}
 
         {/* Results Dashboard */}
@@ -236,7 +212,7 @@ export default function App() {
               roadmap={analysisResult.personalized_learning_roadmap || analysisResult.learningRoadmap}
             />
 
-            {/* Bottom Actions Bar with Reset Button (Requirement 8) */}
+            {/* Bottom Actions Bar with Reset Button */}
             <div className="mt-12 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
               <div>
                 <h4 className="text-sm font-bold text-slate-900">Finished Reviewing Audit?</h4>
@@ -267,20 +243,11 @@ export default function App() {
         )}
       </main>
 
-      {/* 7. Downloadable PDF & Markdown Report Modal */}
+      {/* Downloadable PDF & Markdown Report Modal */}
       <ReportModal
         isOpen={isReportOpen}
         onClose={() => setIsReportOpen(false)}
         data={analysisResult}
-      />
-
-      {/* API Key Modal for Live Gemini Integration */}
-      <ApiKeyModal
-        isOpen={isKeyModalOpen}
-        onClose={() => setIsKeyModalOpen(false)}
-        apiKey={customApiKey}
-        onSaveApiKey={handleSaveApiKey}
-        isServerConfigured={isServerKeyConfigured}
       />
 
       {/* Professional SaaS Footer */}

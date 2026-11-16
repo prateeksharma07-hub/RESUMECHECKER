@@ -1,10 +1,8 @@
 import React from 'react';
-import { Sparkles, Key, RotateCcw, Cpu, ShieldCheck, Zap } from 'lucide-react';
+import { Sparkles, RotateCcw, Zap } from 'lucide-react';
 
 export default function Navbar({
   onReset,
-  onOpenKeyModal,
-  isKeyConfigured,
   hasResults,
   onLoadDemo
 }) {
@@ -48,17 +46,7 @@ export default function Navbar({
               <span>Load Demo Sample</span>
             </button>
 
-            {/* API Key Modal Button */}
-            <button
-              onClick={onOpenKeyModal}
-              title="Configure Gemini API Key"
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors"
-            >
-              <Key className="w-3.5 h-3.5 text-violet-400" />
-              <span className="hidden md:inline">API Key</span>
-            </button>
-
-            {/* Reset Button (Requirement 8) */}
+            {/* Reset Button */}
             {hasResults && (
               <button
                 onClick={onReset}
