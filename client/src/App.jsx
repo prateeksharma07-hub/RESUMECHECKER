@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
+import HeroSection from './components/landing/HeroSection';
+import TrustStrip from './components/landing/TrustStrip';
+import HowItWorks from './components/landing/HowItWorks';
+import FeaturesGrid from './components/landing/FeaturesGrid';
+import IntelligencePreview from './components/landing/IntelligencePreview';
+import SkillGapPreview from './components/landing/SkillGapPreview';
+import RoadmapPreview from './components/landing/RoadmapPreview';
+import WhyCareerLens from './components/landing/WhyCareerLens';
+import FaqSection from './components/landing/FaqSection';
+import FinalCta from './components/landing/FinalCta';
+import Footer from './components/landing/Footer';
+
 import InputSection from './components/InputSection';
 import LoadingSkeleton from './components/LoadingSkeleton';
 import ScoreOverview from './components/ScoreOverview';
@@ -11,6 +22,7 @@ import RoleMatches from './components/RoleMatches';
 import RoadmapTimeline from './components/RoadmapTimeline';
 import ReportModal from './components/ReportModal';
 import AboutSection from './components/AboutSection';
+
 import { SAMPLE_RESUMES, SAMPLE_JOB_DESCRIPTIONS } from './utils/presets';
 import { RotateCcw, Download, Sparkles } from 'lucide-react';
 
@@ -59,8 +71,20 @@ export default function App() {
     const el = document.getElementById('studio-section');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      window.scrollTo({ top: 400, behavior: 'smooth' });
+    }
+  };
+
+  const scrollToStudio = () => {
+    const el = document.getElementById('studio-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToFeatures = () => {
+    const el = document.getElementById('features-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -139,7 +163,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#08090E] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-300 relative selection:bg-violet-500/30 selection:text-violet-900 dark:selection:text-violet-200">
       
-      {/* Dynamic Floating Glass Navbar */}
+      {/* Floating Frosted Glass Header */}
       <Navbar
         onReset={handleReset}
         hasResults={Boolean(analysisResult)}
@@ -147,13 +171,18 @@ export default function App() {
       />
 
       <main className="flex-1 pb-16">
-        {/* Multi-Color Fluid Ambient Hero */}
-        <Hero
+        
+        {/* Section 1: Hero Section */}
+        <HeroSection
+          onAnalyzeClick={scrollToStudio}
+          onExploreFeatures={scrollToFeatures}
           onQuickDemo={handleQuickDemo}
-          hasResults={Boolean(analysisResult)}
         />
 
-        {/* Studio Input Section (PDF / TXT Upload & Job Description) */}
+        {/* Section 2: Trust / Technology Strip */}
+        <TrustStrip />
+
+        {/* Studio Analyzer Workbench (Destination of 'Analyze My Resume') */}
         <InputSection
           resumeMode={resumeMode}
           setResumeMode={setResumeMode}
@@ -180,10 +209,10 @@ export default function App() {
           onClearAll={handleReset}
         />
 
-        {/* Multi-Stage Animated Holographic Loading Scanner */}
+        {/* Animated Holographic Scanner (when analyzing) */}
         {isLoading && <LoadingSkeleton />}
 
-        {/* Executive Analysis Results Dashboard */}
+        {/* Executive Results Dashboard (when results exist) */}
         {analysisResult && !isLoading && (
           <div id="analysis-results" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
             
@@ -199,7 +228,7 @@ export default function App() {
               missingSkills={analysisResult.missing_skills || analysisResult.missingSkills}
             />
 
-            {/* 4. Strengths & Weaknesses (with missing details distinction) */}
+            {/* 4. Strengths & Weaknesses */}
             <StrengthsWeaknesses
               strengths={analysisResult.strengths}
               weaknesses={analysisResult.weaknesses}
@@ -250,8 +279,36 @@ export default function App() {
           </div>
         )}
 
-        {/* Platform Methodology, Google XYZ & Privacy Standards */}
+        {/* Section 3: How CareerLens AI Works (3 Steps) */}
+        <HowItWorks onStartAudit={scrollToStudio} />
+
+        {/* Section 4: Features Grid with Icons */}
+        <FeaturesGrid />
+
+        {/* Section 5: Resume Intelligence Preview (Google XYZ diffs) */}
+        <IntelligencePreview />
+
+        {/* Section 6: Skill Gap Analysis Preview */}
+        <SkillGapPreview onStartAudit={scrollToStudio} />
+
+        {/* Section 7: Career Roadmap Preview */}
+        <RoadmapPreview onStartAudit={scrollToStudio} />
+
+        {/* Section 8: Why CareerLens AI (Legacy ATS vs CareerLens) */}
+        <WhyCareerLens onStartAudit={scrollToStudio} />
+
+        {/* Section 9: Frequently Asked Questions (FAQ) */}
+        <FaqSection />
+
+        {/* Section 10: Final High-Impact CTA */}
+        <FinalCta
+          onAnalyzeClick={scrollToStudio}
+          onQuickDemo={handleQuickDemo}
+        />
+
+        {/* Platform Methodology & Google XYZ Standard Deep Dive */}
         <AboutSection />
+
       </main>
 
       {/* Downloadable PDF & Markdown Dossier Modal */}
@@ -261,19 +318,9 @@ export default function App() {
         data={analysisResult}
       />
 
-      {/* Professional SaaS Multi-Theme Footer */}
-      <footer className="bg-slate-100 dark:bg-[#05060A] text-slate-600 dark:text-slate-400 border-t border-slate-200/80 dark:border-white/10 py-10 text-xs no-print transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center space-x-2.5">
-            <span className="font-extrabold text-slate-900 dark:text-white">CareerLens AI</span>
-            <span>&bull;</span>
-            <span>Executive ATS Intelligence & Career Advisory MVP</span>
-          </div>
-          <div className="flex items-center space-x-4 text-slate-500 dark:text-slate-400">
-            <span>React 19 &bull; Vite &bull; Tailwind CSS v4 &bull; Node.js Express &bull; Google Gemini 3.5</span>
-          </div>
-        </div>
-      </footer>
+      {/* Section 11: Premium Multi-Column Footer */}
+      <Footer onReset={handleReset} />
+
     </div>
   );
 }

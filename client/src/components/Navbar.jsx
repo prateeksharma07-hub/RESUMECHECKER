@@ -28,7 +28,7 @@ export default function Navbar({
           <div 
             className="flex items-center space-x-3 cursor-pointer select-none group" 
             onClick={onReset}
-            title="CareerLens AI — Return to Studio"
+            title="CareerLens AI — Return to Home"
           >
             <div className="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-violet-600 via-pink-500 to-amber-400 p-[1.5px] shadow-md shadow-violet-500/20 group-hover:scale-105 transition-transform duration-300">
               <div className="w-full h-full rounded-[10px] bg-slate-950 flex items-center justify-center">
@@ -52,27 +52,39 @@ export default function Navbar({
           </div>
 
           {/* Center Navigation Links (Desktop) */}
-          <div className="hidden md:flex items-center space-x-1 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100/80 dark:bg-white/5 p-1 rounded-xl border border-slate-200/50 dark:border-white/5">
+          <div className="hidden lg:flex items-center space-x-1 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100/80 dark:bg-white/5 p-1 rounded-xl border border-slate-200/50 dark:border-white/5">
             <button
               onClick={() => handleNavClick('studio-section')}
-              className="px-3 py-1.5 rounded-lg hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-white/10 transition-all"
+              className="px-3 py-1.5 rounded-lg hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-white/10 transition-all cursor-pointer"
             >
-              Workspace
+              Analyze
+            </button>
+            <button
+              onClick={() => handleNavClick('how-it-works-section')}
+              className="px-3 py-1.5 rounded-lg hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-white/10 transition-all cursor-pointer"
+            >
+              How It Works
+            </button>
+            <button
+              onClick={() => handleNavClick('features-section')}
+              className="px-3 py-1.5 rounded-lg hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-white/10 transition-all cursor-pointer"
+            >
+              Features
             </button>
             {hasResults && (
               <button
                 onClick={() => handleNavClick('analysis-results')}
-                className="px-3 py-1.5 rounded-lg text-emerald-600 dark:text-emerald-400 hover:bg-white dark:hover:bg-white/10 transition-all flex items-center space-x-1"
+                className="px-3 py-1.5 rounded-lg text-emerald-600 dark:text-emerald-400 hover:bg-white dark:hover:bg-white/10 transition-all flex items-center space-x-1 cursor-pointer"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping mr-1" />
                 <span>Live Audit</span>
               </button>
             )}
             <button
-              onClick={() => handleNavClick('about-section')}
-              className="px-3 py-1.5 rounded-lg hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-white/10 transition-all"
+              onClick={() => handleNavClick('faq-section')}
+              className="px-3 py-1.5 rounded-lg hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-white/10 transition-all cursor-pointer"
             >
-              Methodology
+              FAQ
             </button>
           </div>
 

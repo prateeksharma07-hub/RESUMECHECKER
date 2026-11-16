@@ -17,7 +17,7 @@ export default function SkillsAnalysis({ matchingSkills = [], missingSkills = []
 
   return (
     <div className="glass-card rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-xl dark:shadow-2xl p-6 sm:p-8 mb-8 transition-all">
-      
+
       {/* Header & Filter Controls */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-200/60 dark:border-white/10">
         <div>
@@ -39,33 +39,30 @@ export default function SkillsAnalysis({ matchingSkills = [], missingSkills = []
           <button
             type="button"
             onClick={() => setActiveFilter('all')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-              activeFilter === 'all'
+            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${activeFilter === 'all'
                 ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-xs'
                 : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-            }`}
+              }`}
           >
             All ({normalizedMatching.length + normalizedMissing.length})
           </button>
           <button
             type="button"
             onClick={() => setActiveFilter('matched')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-              activeFilter === 'matched'
+            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${activeFilter === 'matched'
                 ? 'bg-emerald-500 text-white shadow-xs'
                 : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-            }`}
+              }`}
           >
             Matched ({normalizedMatching.length})
           </button>
           <button
             type="button"
             onClick={() => setActiveFilter('missing')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-              activeFilter === 'missing'
+            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${activeFilter === 'missing'
                 ? 'bg-rose-500 text-white shadow-xs'
                 : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-            }`}
+              }`}
           >
             Gaps ({normalizedMissing.length})
           </button>
@@ -74,7 +71,7 @@ export default function SkillsAnalysis({ matchingSkills = [], missingSkills = []
 
       {/* 2-Column Comparative Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
+
         {/* Column 1: Matching Skills (Aurora Mint / Emerald) */}
         {(activeFilter === 'all' || activeFilter === 'matched') && (
           <div className="p-6 rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200/70 dark:border-emerald-800/40">
@@ -141,11 +138,10 @@ export default function SkillsAnalysis({ matchingSkills = [], missingSkills = []
                           </span>
                         )}
                       </div>
-                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
-                        skill.importance === 'Critical'
+                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${skill.importance === 'Critical'
                           ? 'bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300'
                           : 'bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300'
-                      }`}>
+                        }`}>
                         {skill.importance || 'Critical Gap'}
                       </span>
                     </div>
